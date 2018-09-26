@@ -10,7 +10,6 @@ from tensorflow.keras import optimizers
 csvfile   = "./train.csv"
 modelfile = "./model.h5"
 
-images = []
 x_train = np.array([])
 y_train = np.array([])
 
@@ -22,19 +21,18 @@ classes_num = 7  # 7 different expressions
 model = Sequential()
 
 def openTrainFile():
-    global x_train
-    global y_train
+    global x_train, y_train
     with open(csvfile) as f:
         content = f.readlines()
     content.pop(0)
     content = [x.strip() for x in content]
+    images = []
     tags = []
     for l in content:
         tag = int(re.search(r'^\d+', l).group())
         pixels = [int(p) for p in re.sub(r'^\d+,', '', l).split()]
 
         images.append(
-            # np.reshape(np.array(pixels), (-1, imageW))
             np.array(pixels).reshape(imgW, imgH, 1)
         )
         tags.append(tag)
@@ -43,8 +41,7 @@ def openTrainFile():
     y_train = utils.to_categorical(np.array(tags))
 
 def train():
-    global x_train
-    global y_train
+    global model, x_train, y_train
     model.add(Conv2D(32,
                      kernel_size=(3, 3),
                      activation='relu',
