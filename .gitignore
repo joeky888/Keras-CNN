@@ -1,4 +1,7 @@
-*.csv
-venv
 .idea
+venv
+*.csv
 *.h5
+*.pdf
+*.ppt
+*.pptx
